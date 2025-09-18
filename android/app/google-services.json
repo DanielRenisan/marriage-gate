@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "651673564569",
+    "project_id": "marriagegate-470412",
+    "storage_bucket": "marriagegate-470412.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651673564569:android:2b5c048f9fa836e1a98f08",
+        "android_client_info": {
+          "package_name": "com.example.matrimoney_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651673564569-2u8hb89ctjejptkv8alf4q2c1q3jdmm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.matrimoney_app",
+            "certificate_hash": "b7377b53dd642507486136f3e0bba3bb89bad6ba"
+          }
+        },
+        {
+          "client_id": "651673564569-ii30grkk966qn8fhbp5ikis2h2mv72kt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdAaTM4okGBaNRLucUMmPrDQ4LxiAc2Uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651673564569-ii30grkk966qn8fhbp5ikis2h2mv72kt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

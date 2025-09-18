@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Red to Dark Red Gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D32F2F"/>
+      <stop offset="100%" stop-color="#B71C1C"/>
+    </linearGradient>
+    
+    <!-- Gold Gradient for Letters -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFA000"/>
+      <stop offset="100%" stop-color="#FF8F00"/>
+    </linearGradient>
+    
+    <!-- Shadow Filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="4" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded rectangle (app icon shape) -->
+  <rect width="1024" height="1024" rx="200" ry="200" fill="url(#bgGradient)"/>
+  
+  <!-- Heart shape base -->
+  <path d="M512 850 
+           C400 750, 150 600, 150 400
+           C150 300, 220 250, 300 250
+           C380 250, 450 300, 512 350
+           C574 300, 644 250, 724 250
+           C804 250, 874 300, 874 400
+           C874 600, 624 750, 512 850 Z" 
+        fill="url(#bgGradient)" 
+        stroke="url(#goldGradient)" 
+        stroke-width="8"/>
+
+  <!-- Letter M -->
+  <path d="M200 200 L200 550 L250 550 L250 320 L350 480 L400 480 L500 320 L500 550 L550 550 L550 200 L450 200 L375 380 L300 200 Z" 
+        fill="url(#goldGradient)" 
+        filter="url(#shadow)"/>
+
+  <!-- Letter G -->
+  <path d="M650 200 
+           C600 200, 570 230, 570 280
+           L570 470
+           C570 520, 600 550, 650 550
+           L750 550
+           C800 550, 830 520, 830 470
+           L830 400
+           L750 400
+           L750 450
+           L780 450
+           L780 470
+           C780 490, 770 500, 750 500
+           L650 500
+           C630 500, 620 490, 620 470
+           L620 280
+           C620 260, 630 250, 650 250
+           L750 250
+           C770 250, 780 260, 780 280
+           L780 320
+           L720 320
+           L720 370
+           L830 370
+           L830 280
+           C830 230, 800 200, 750 200
+           L650 200 Z" 
+        fill="url(#goldGradient)" 
+        filter="url(#shadow)"/>
+
+  <!-- Two small circles (dots above M and G) -->
+  <circle cx="375" cy="120" r="35" fill="url(#goldGradient)" filter="url(#shadow)"/>
+  <circle cx="725" cy="120" r="35" fill="url(#goldGradient)" filter="url(#shadow)"/>
+</svg>
