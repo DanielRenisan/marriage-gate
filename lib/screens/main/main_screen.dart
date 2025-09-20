@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:matrimony_flutter/screens/profile/profile_view.dart';
 import 'package:matrimony_flutter/screens/matches/matches_view.dart';
 import 'package:matrimony_flutter/screens/chat/chat_view.dart';
 import 'package:matrimony_flutter/screens/notifications/notifications_screen.dart';
+import 'package:matrimony_flutter/widgets/profile_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,10 +15,10 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const MatchesView(), // Matching Profiles (Home)
-    const ChatView(), // Chats
-    const NotificationsScreen(), // Notifications
-    const ProfileView(), // User Profile
+    const MatchesView(),
+    const ChatView(),
+    const NotificationsScreen(),
+    ProfileDrawer(),
   ];
 
   final List<String> _screenNames = [
@@ -35,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
         index: _currentIndex,
         children: _screens,
       ),
+      endDrawer: ProfileDrawer(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,

@@ -45,11 +45,6 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
   void initState() {
     super.initState();
     _loadExistingData();
-    _testGoogleMapsApi();
-  }
-
-  void _testGoogleMapsApi() async {
-    final isWorking = await GoogleMapsService.testApiKey();
   }
 
   @override

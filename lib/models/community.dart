@@ -40,9 +40,7 @@ class Community {
   });
 
   factory Community.fromJson(Map<String, dynamic> json) {
-    final subCommunitiesList = (json['subCommunities'] as List?)
-        ?.map((item) => SubCommunity.fromJson(item))
-        .toList() ?? [];
+    final subCommunitiesList = (json['subCommunities'] as List?)?.map((item) => SubCommunity.fromJson(item)).toList() ?? [];
 
     return Community(
       id: json['id'] ?? '',
@@ -76,9 +74,7 @@ class CommunityResponse {
   });
 
   factory CommunityResponse.fromJson(Map<String, dynamic> json) {
-    final dataList = (json['data'] as List?)
-        ?.map((item) => Community.fromJson(item))
-        .toList() ?? [];
+    final dataList = (json['data'] as List?)?.map((item) => Community.fromJson(item)).toList() ?? [];
 
     return CommunityResponse(
       data: dataList,

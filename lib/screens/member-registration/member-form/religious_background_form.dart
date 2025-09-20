@@ -42,11 +42,6 @@ class _ReligiousBackgroundFormState extends State<ReligiousBackgroundForm> {
   void initState() {
     super.initState();
     _loadExistingData();
-    _testGoogleMapsApi();
-  }
-
-  void _testGoogleMapsApi() async {
-    final isWorking = await GoogleMapsService.testApiKey();
   }
 
   @override
@@ -134,7 +129,7 @@ class _ReligiousBackgroundFormState extends State<ReligiousBackgroundForm> {
             if (dataProvider.isLoadingReligions)
               Container(
                 padding: EdgeInsets.all(16.w),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                   ),
@@ -161,7 +156,7 @@ class _ReligiousBackgroundFormState extends State<ReligiousBackgroundForm> {
             if (dataProvider.isLoadingCommunities)
               Container(
                 padding: EdgeInsets.all(16.w),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                   ),

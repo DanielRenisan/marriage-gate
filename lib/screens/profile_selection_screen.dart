@@ -18,7 +18,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    // Defer the API call until after the build phase is complete
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadMemberProfiles();
     });
@@ -39,7 +38,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     }
   }
 
-  void _selectMemberProfile(UserProfile profile) {
+  void _selectMemberProfile(MemberProfile profile) {
     final memberProvider = Provider.of<MemberProvider>(context, listen: false);
     memberProvider.setCurrentUserProfile(profile);
 
@@ -220,7 +219,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     );
   }
 
-  Widget _buildMemberProfileCard(UserProfile profile) {
+  Widget _buildMemberProfileCard(MemberProfile profile) {
     return Card(
       margin: EdgeInsets.only(bottom: 16.h),
       elevation: 2,

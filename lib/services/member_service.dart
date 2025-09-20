@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:matrimony_flutter/models/member.dart';
 import 'package:matrimony_flutter/models/profile_response.dart';
 import 'package:matrimony_flutter/models/profile_request.dart';
-import 'package:matrimony_flutter/models/member_registration_request.dart';
 import 'package:matrimony_flutter/models/matching_profile_response.dart';
 import 'package:matrimony_flutter/models/notification_item.dart';
 import 'package:matrimony_flutter/utils/constants.dart';
@@ -16,8 +15,8 @@ class MemberService {
   final String _baseUrl = ApiEndpoints.baseUrl;
   final AuthService _authService = AuthService();
 
-  // Get all member profiles - Exact Angular implementation
-  Future<List<UserProfile>> getUserProfiles() async {
+  // Get all member profiles
+  Future<List<MemberProfile>> getMemberProfiles() async {
     try {
       final token = await _authService.getAuthToken();
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getUserProfiles}');
@@ -34,7 +33,7 @@ class MemberService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['Result'] != null) {
-          return (data['Result'] as List).map((item) => UserProfile.fromJson(item)).toList();
+          return (data['Result'] as List).map((item) => MemberProfile.fromJson(item)).toList();
         }
         return [];
       } else {
@@ -47,39 +46,8 @@ class MemberService {
     }
   }
 
-  // Get all member profiles - Uses correct API endpoint Profile/user
-  Future<List<UserProfile>> getProfiles() async {
-    try {
-      final token = await _authService.getAuthToken();
-      final url = Uri.parse('$_baseUrl${ApiEndpoints.getUserProfiles}');
-
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['Result'] != null) {
-          return (data['Result'] as List).map((item) => UserProfile.fromJson(item)).toList();
-        }
-        return [];
-      } else {
-        final errorData = json.decode(response.body);
-        final errorMessage = errorData['Message'] ?? 'Failed to get profiles';
-        throw Exception(errorMessage);
-      }
-    } catch (e) {
-      throw Exception('Error getting profiles: $e');
-    }
-  }
-
   // Get member profile by ID
-  Future<UserProfile> getMemberProfileById(String id) async {
+  Future<MemberProfile> getMemberProfileById(String id) async {
     try {
       final token = await _authService.getAuthToken();
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getMemberById}$id');
@@ -96,7 +64,7 @@ class MemberService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['Result'] != null) {
-          return UserProfile.fromJson(data['Result']);
+          return MemberProfile.fromJson(data['Result']);
         }
         throw Exception('Profile not found');
       } else {
@@ -109,16 +77,12 @@ class MemberService {
     }
   }
 
-  // Create member profile using ProfileRequest model (Legacy)
-  Future<ProfileResponse> createProfile(ProfileRequest profileRequest) async {
+  // Create member profile
+  Future<ProfileResponse> createMemberProfile(ProfileRequest profileRequest) async {
     try {
       final token = await _authService.getAuthToken();
       final url = Uri.parse('$_baseUrl${ApiEndpoints.createProfile}');
-
-      // Convert ProfileRequest to JSON
       final requestBody = profileRequest.toJson();
-
-      // Test JSON encoding to catch any issues
       String jsonBody;
       try {
         jsonBody = json.encode(requestBody);
@@ -135,53 +99,6 @@ class MemberService {
         },
         body: jsonBody,
       );
-
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        return ProfileResponse.fromJson(responseData);
-      } else {
-        final errorData = json.decode(response.body);
-        final errorMessage = errorData['Result']?['errors']?['\$']?.first ??
-            errorData['Result']?['errors']?['profileRequestDTO']?.first ??
-            errorData['Error']?['Detail'] ??
-            errorData['Message'] ??
-            'Failed to create profile';
-        throw Exception(errorMessage);
-      }
-    } catch (e) {
-      throw Exception('Error creating profile: $e');
-    }
-  }
-
-  // Create member profile using MemberRegistrationRequest model (New Angular-compatible)
-  Future<ProfileResponse> createMemberProfile(MemberRegistrationRequest registrationRequest) async {
-    try {
-      final token = await _authService.getAuthToken();
-      final url = Uri.parse('$_baseUrl${ApiEndpoints.createProfile}');
-
-      // Convert MemberRegistrationRequest to JSON
-      final requestBody = registrationRequest.toJson();
-
-
-      // Test JSON encoding to catch any issues
-      String jsonBody;
-      try {
-        jsonBody = json.encode(requestBody);
-      } catch (e) {
-        throw Exception('Failed to encode request body as JSON: $e');
-      }
-
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonBody,
-      );
-
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -259,7 +176,6 @@ class MemberService {
       // Use default filters if none provided
       final requestFilters = filters ?? MatchingProfilesRequest.defaultRequest();
 
-
       final response = await http.post(
         url,
         headers: {
@@ -269,7 +185,6 @@ class MemberService {
         },
         body: json.encode(requestFilters.toJson()),
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -382,7 +297,7 @@ class MemberService {
   }
 
   // Get friends list
-  Future<List<UserProfile>> getFriends() async {
+  Future<List<MemberProfile>> getFriends() async {
     try {
       final token = await _authService.getAuthToken();
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getFriends}');
@@ -399,7 +314,7 @@ class MemberService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['Result'] != null) {
-          return (data['Result'] as List).map((item) => UserProfile.fromJson(item)).toList();
+          return (data['Result'] as List).map((item) => MemberProfile.fromJson(item)).toList();
         }
         return [];
       } else {
@@ -541,7 +456,6 @@ class MemberService {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final result = data['Result'];
@@ -581,7 +495,6 @@ class MemberService {
 
       final uri = url.replace(queryParameters: queryParams);
 
-
       final response = await http.get(
         uri,
         headers: {
@@ -590,7 +503,6 @@ class MemberService {
           'Authorization': 'Bearer $token',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -632,7 +544,6 @@ class MemberService {
         }),
       );
 
-
       if (response.statusCode != 200) {
         final errorData = json.decode(response.body);
         final errorMessage = errorData['Message'] ?? 'Failed to mark notification as read';
@@ -656,7 +567,6 @@ class MemberService {
           'Authorization': 'Bearer $token',
         },
       );
-
 
       if (response.statusCode != 200) {
         final errorData = json.decode(response.body);

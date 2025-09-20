@@ -4,8 +4,9 @@ import 'package:matrimony_flutter/services/social_auth_service.dart';
 import 'package:matrimony_flutter/services/profile_check_service.dart';
 import 'package:matrimony_flutter/services/member_service.dart';
 import 'package:matrimony_flutter/models/user.dart';
-import 'package:matrimony_flutter/models/member.dart';
 import 'package:matrimony_flutter/utils/constants.dart';
+
+import '../models/member.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -584,9 +585,9 @@ class AuthProvider extends ChangeNotifier {
     await _socialAuthService.signOut();
   }
 
-  Future<List<UserProfile>> loadUserProfiles() async {
+  Future<List<MemberProfile>> loadUserProfiles() async {
     try {
-      final profiles = await _memberService.getUserProfiles();
+      final profiles = await _memberService.getMemberProfiles();
 
       if (profiles.isEmpty) {
         return [];

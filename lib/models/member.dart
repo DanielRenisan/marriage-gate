@@ -1,5 +1,3 @@
-
-
 // Profile Job Model
 class ProfileJob {
   final String? id;
@@ -325,7 +323,7 @@ class ProfileImage {
 }
 
 // User Profile Model
-class UserProfile {
+class MemberProfile {
   final String id;
   final int profileFor;
   final bool isActive;
@@ -364,7 +362,7 @@ class UserProfile {
   final List<ProfileEducation> profileEducations;
   final String phoneCode;
   final int age;
-  
+
   // Additional properties for compatibility with screens
   String? get profileImage => profileImages.isNotEmpty ? profileImages.first.url : null;
   String? get city => profileAddresses.isNotEmpty ? profileAddresses.first.city : null;
@@ -390,84 +388,120 @@ class UserProfile {
   String? get drinkHabit => _getDrinkText(drinksHabit);
   String? get smokeHabitText => _getSmokeText(smokeHabit);
   String? get complexion => _getComplexionText(skinComplexion);
-  MatchPreferences? get matchPreferences => profileLookingFor != null ? MatchPreferences(
-    ageFrom: profileLookingFor!.minAge,
-    ageTo: profileLookingFor!.maxAge,
-    heightFrom: null,
-    heightTo: null,
-    maritalStatus: null,
-    religion: null,
-    education: null,
-    jobType: null,
-    location: profileLookingFor!.country,
-  ) : null;
-  
+  MatchPreferences? get matchPreferences => profileLookingFor != null
+      ? MatchPreferences(
+          ageFrom: profileLookingFor!.minAge,
+          ageTo: profileLookingFor!.maxAge,
+          heightFrom: null,
+          heightTo: null,
+          maritalStatus: null,
+          religion: null,
+          education: null,
+          jobType: null,
+          location: profileLookingFor!.country,
+        )
+      : null;
+
   // Helper methods for text conversion
   String? _getMaritalStatusText(int status) {
     switch (status) {
-      case 1: return 'Single';
-      case 2: return 'Married';
-      case 3: return 'Divorced';
-      case 4: return 'Widowed';
-      case 5: return 'Separated';
-      default: return 'Not specified';
-    }
-  }
-  
-  String? _getReligionText(String religionId) {
-    switch (religionId) {
-      case '1': return 'Hindu';
-      case '2': return 'Muslim';
-      case '3': return 'Christian';
-      case '4': return 'Sikh';
-      case '5': return 'Buddhist';
-      case '6': return 'Jain';
-      default: return 'Other';
-    }
-  }
-  
-  String? _getDietText(int diet) {
-    switch (diet) {
-      case 1: return 'Non-Vegetarian';
-      case 2: return 'Vegetarian';
-      case 3: return 'Vegan';
-      case 4: return 'Eggetarian';
-      default: return 'Not specified';
-    }
-  }
-  
-  String? _getDrinkText(int drink) {
-    switch (drink) {
-      case 1: return 'Non-Drinker';
-      case 2: return 'Occasionally';
-      case 3: return 'Regularly';
-      case 4: return 'Trying to Quit';
-      default: return 'Not specified';
-    }
-  }
-  
-  String? _getSmokeText(int smoke) {
-    switch (smoke) {
-      case 1: return 'Non-Smoker';
-      case 2: return 'Occasionally';
-      case 3: return 'Regularly';
-      case 4: return 'Trying to Quit';
-      default: return 'Not specified';
-    }
-  }
-  
-  String? _getComplexionText(int complexion) {
-    switch (complexion) {
-      case 1: return 'Very Fair';
-      case 2: return 'Fair';
-      case 3: return 'Wheatish';
-      case 4: return 'Wheatish Brown';
-      case 5: return 'Dark';
-      default: return 'Not specified';
+      case 1:
+        return 'Single';
+      case 2:
+        return 'Married';
+      case 3:
+        return 'Divorced';
+      case 4:
+        return 'Widowed';
+      case 5:
+        return 'Separated';
+      default:
+        return 'Not specified';
     }
   }
 
-  UserProfile({
+  String? _getReligionText(String religionId) {
+    switch (religionId) {
+      case '1':
+        return 'Hindu';
+      case '2':
+        return 'Muslim';
+      case '3':
+        return 'Christian';
+      case '4':
+        return 'Sikh';
+      case '5':
+        return 'Buddhist';
+      case '6':
+        return 'Jain';
+      default:
+        return 'Other';
+    }
+  }
+
+  String? _getDietText(int diet) {
+    switch (diet) {
+      case 1:
+        return 'Non-Vegetarian';
+      case 2:
+        return 'Vegetarian';
+      case 3:
+        return 'Vegan';
+      case 4:
+        return 'Eggetarian';
+      default:
+        return 'Not specified';
+    }
+  }
+
+  String? _getDrinkText(int drink) {
+    switch (drink) {
+      case 1:
+        return 'Non-Drinker';
+      case 2:
+        return 'Occasionally';
+      case 3:
+        return 'Regularly';
+      case 4:
+        return 'Trying to Quit';
+      default:
+        return 'Not specified';
+    }
+  }
+
+  String? _getSmokeText(int smoke) {
+    switch (smoke) {
+      case 1:
+        return 'Non-Smoker';
+      case 2:
+        return 'Occasionally';
+      case 3:
+        return 'Regularly';
+      case 4:
+        return 'Trying to Quit';
+      default:
+        return 'Not specified';
+    }
+  }
+
+  String? _getComplexionText(int complexion) {
+    switch (complexion) {
+      case 1:
+        return 'Very Fair';
+      case 2:
+        return 'Fair';
+      case 3:
+        return 'Wheatish';
+      case 4:
+        return 'Wheatish Brown';
+      case 5:
+        return 'Dark';
+      default:
+        return 'Not specified';
+    }
+  }
+
+  MemberProfile({
     required this.id,
     required this.profileFor,
     required this.isActive,
@@ -508,8 +542,8 @@ class UserProfile {
     required this.age,
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
-    return UserProfile(
+  factory MemberProfile.fromJson(Map<String, dynamic> json) {
+    return MemberProfile(
       id: json['id'] ?? '',
       profileFor: json['profileFor'] ?? 0,
       isActive: json['isActive'] ?? false,
@@ -545,9 +579,17 @@ class UserProfile {
       profileAstrology: json['profileAstrology'] != null ? ProfileAstrology.fromJson(json['profileAstrology']) : null,
       profileImages: (json['profileImages'] as List<dynamic>?)?.isNotEmpty == true
           ? (json['profileImages'] as List<dynamic>).map((i) => ProfileImage.fromJson(i as Map<String, dynamic>)).toList()
-          : [ProfileImage(url: 'https://dev1mg.blob.core.windows.net/temp/mgate/indian-groom-wearing-traditional-wedding-sherwani-turban-vector-illustration-gold-red-feather-detail-depicting-381238297.webp-446f2768-f5af-417f-9d39-17fa69ce3636?sv=2025-05-05&se=2025-07-01T10%3A28%3A51Z&sr=b&sp=rd&sig=bm5avHwTVMc%2BHiFNjDG4Y3XdOqFmboMPeuQqhYOqAtw%3D')],
-      profileAddresses: (json['profileAddresses'] as List<dynamic>? ?? []).map((a) => ProfileAddress.fromJson(a as Map<String, dynamic>)).toList(),
-      profileEducations: (json['profileEducations'] as List<dynamic>? ?? []).map((e) => ProfileEducation.fromJson(e as Map<String, dynamic>)).toList(),
+          : [
+              ProfileImage(
+                  url:
+                      'https://dev1mg.blob.core.windows.net/temp/mgate/indian-groom-wearing-traditional-wedding-sherwani-turban-vector-illustration-gold-red-feather-detail-depicting-381238297.webp-446f2768-f5af-417f-9d39-17fa69ce3636?sv=2025-05-05&se=2025-07-01T10%3A28%3A51Z&sr=b&sp=rd&sig=bm5avHwTVMc%2BHiFNjDG4Y3XdOqFmboMPeuQqhYOqAtw%3D')
+            ],
+      profileAddresses: (json['profileAddresses'] as List<dynamic>? ?? [])
+          .map((a) => ProfileAddress.fromJson(a as Map<String, dynamic>))
+          .toList(),
+      profileEducations: (json['profileEducations'] as List<dynamic>? ?? [])
+          .map((e) => ProfileEducation.fromJson(e as Map<String, dynamic>))
+          .toList(),
       phoneCode: json['phoneCode'] ?? '',
       age: json['age'] ?? 0,
     );
@@ -816,7 +858,7 @@ class MatchPreferences {
   final String? education;
   final String? jobType;
   final String? location;
-  
+
   // Additional properties for compatibility with screens
   String? get gender => 'Male'; // Default value
   int? get minAge => ageFrom;
@@ -867,7 +909,7 @@ class ChatParticipant {
   final String lastMessageTime;
   final bool isOnline;
   final int unreadCount;
-  
+
   // Additional properties for compatibility with screens
   String? get profileImage => imageUrl;
   String? get name => '$firstName $lastName';
@@ -924,7 +966,7 @@ class ChatMessage {
   final String timestamp;
   final bool isRead;
   final String? readAt;
-  
+
   // Additional properties for compatibility with screens
   String? get textContent => content;
   List<String>? get fileUrls => []; // Default empty list

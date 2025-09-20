@@ -54,7 +54,6 @@ class DataProvider extends ChangeNotifier {
       notifyListeners();
 
       _educationQualifications = await _dataService.getEducationQualifications();
-      
     } catch (e) {
       _educationQualifications = [];
     } finally {
@@ -70,7 +69,6 @@ class DataProvider extends ChangeNotifier {
       notifyListeners();
 
       _communities = await _dataService.getCommunities();
-      
     } catch (e) {
       _communities = [];
     } finally {
@@ -86,7 +84,6 @@ class DataProvider extends ChangeNotifier {
       notifyListeners();
 
       _jobTypes = await _dataService.getJobTypes();
-      
     } catch (e) {
       _jobTypes = [];
     } finally {
@@ -102,7 +99,6 @@ class DataProvider extends ChangeNotifier {
       notifyListeners();
 
       _religions = await _dataService.getReligions();
-      
     } catch (e) {
       _religions = [];
     } finally {
@@ -111,89 +107,53 @@ class DataProvider extends ChangeNotifier {
     }
   }
 
-  // Get Education Qualification by ID
-  EducationQualification? getEducationQualificationById(String id) {
-    try {
-      return _educationQualifications.firstWhere((item) => item.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Get Community by ID
-  Community? getCommunityById(String id) {
-    try {
-      return _communities.firstWhere((item) => item.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Get Job Type by ID
-  JobType? getJobTypeById(String id) {
-    try {
-      return _jobTypes.firstWhere((item) => item.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Get Religion by ID
-  Religion? getReligionById(String id) {
-    try {
-      return _religions.firstWhere((item) => item.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Get Sub-Community by ID
-  SubCommunity? getSubCommunityById(String communityId, String subCommunityId) {
-    try {
-      final community = _communities.firstWhere((item) => item.id == communityId);
-      return community.subCommunities.firstWhere((item) => item.id == subCommunityId);
-    } catch (e) {
-      return null;
-    }
-  }
-
   // Convert to dropdown options format
   List<Map<String, dynamic>> getEducationQualificationOptions() {
-    return _educationQualifications.map((item) => {
-      'id': item.id,
-      'name': item.name,
-    }).toList();
+    return _educationQualifications
+        .map((item) => {
+              'id': item.id,
+              'name': item.name,
+            })
+        .toList();
   }
 
   List<Map<String, dynamic>> getCommunityOptions() {
-    return _communities.map((item) => {
-      'id': item.id,
-      'name': item.name,
-    }).toList();
+    return _communities
+        .map((item) => {
+              'id': item.id,
+              'name': item.name,
+            })
+        .toList();
   }
 
   List<Map<String, dynamic>> getJobTypeOptions() {
-    return _jobTypes.map((item) => {
-      'id': item.id,
-      'name': item.name,
-    }).toList();
+    return _jobTypes
+        .map((item) => {
+              'id': item.id,
+              'name': item.name,
+            })
+        .toList();
   }
 
   List<Map<String, dynamic>> getReligionOptions() {
-    return _religions.map((item) => {
-      'id': item.id,
-      'name': item.name,
-    }).toList();
+    return _religions
+        .map((item) => {
+              'id': item.id,
+              'name': item.name,
+            })
+        .toList();
   }
 
   // Get sub-communities for a specific community
   List<Map<String, dynamic>> getSubCommunityOptions(String communityId) {
     try {
       final community = _communities.firstWhere((item) => item.id == communityId);
-      return community.subCommunities.map((item) => {
-        'id': item.id,
-        'name': item.name,
-      }).toList();
+      return community.subCommunities
+          .map((item) => {
+                'id': item.id,
+                'name': item.name,
+              })
+          .toList();
     } catch (e) {
       return [];
     }
@@ -206,7 +166,6 @@ class DataProvider extends ChangeNotifier {
       notifyListeners();
 
       _countries = await _dataService.getCountries();
-      
     } catch (e) {
       _countries = [];
     } finally {
@@ -216,18 +175,14 @@ class DataProvider extends ChangeNotifier {
   }
 
   // Check if data is loaded
-  bool get isDataLoaded => 
-    _educationQualifications.isNotEmpty && 
-    _communities.isNotEmpty && 
-    _jobTypes.isNotEmpty && 
-    _religions.isNotEmpty &&
-    _countries.isNotEmpty;
+  bool get isDataLoaded =>
+      _educationQualifications.isNotEmpty &&
+      _communities.isNotEmpty &&
+      _jobTypes.isNotEmpty &&
+      _religions.isNotEmpty &&
+      _countries.isNotEmpty;
 
   // Check if any data is loading
-  bool get isAnyLoading => 
-    _isLoadingEducation || 
-    _isLoadingCommunities || 
-    _isLoadingJobTypes || 
-    _isLoadingReligions ||
-    _isLoadingCountries;
+  bool get isAnyLoading =>
+      _isLoadingEducation || _isLoadingCommunities || _isLoadingJobTypes || _isLoadingReligions || _isLoadingCountries;
 }

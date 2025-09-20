@@ -40,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String _passwordStrengthText = 'None';
   Color _passwordStrengthColor = Colors.grey;
   bool _isPasswordMatch = true;
-  final bool _isOtpVerifying = false;
 
   // Login form controllers
   final _emailController = TextEditingController();
@@ -236,18 +235,14 @@ class _LoginScreenState extends State<LoginScreen> {
               if (value == null || value.isEmpty) {
                 return 'Email or phone number is required';
               }
-
-              // Check if it's email
               if (value.contains('@')) {
                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
               } else {
-                // Check if it's phone number
                 if (value.length < 10) {
                   return 'Please enter a valid phone number (at least 10 digits)';
                 }
-                // Allow digits, spaces, hyphens, parentheses, and plus sign
                 if (!RegExp(r'^[0-9+\-\s()]+$').hasMatch(value)) {
                   return 'Please enter a valid phone number';
                 }
@@ -467,10 +462,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 _selectedCountryCode = countryCode;
               });
             },
-            onPhoneNumberChanged: (String value) {
-              // The complete phone number is now handled by the controller
-              // No need to store it separately
-            },
+            onPhoneNumberChanged: (String value) {},
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Phone number is required';
@@ -593,15 +585,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
           SizedBox(height: 16.h),
 
-          // Social Login Buttons
           SocialLoginButtons(
             onSuccess: () {
-              // Navigate to profile selection or main screen
               Navigator.pushReplacementNamed(context, '/profile-selection');
             },
-            onError: () {
-              // Handle error (already handled in the widget)
-            },
+            onError: () {},
             onLoadingChanged: (bool isLoading) {
               setState(() {
                 _isSocialLoginLoading = isLoading;
@@ -1020,7 +1008,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final authProvider = context.read<AuthProvider>();
 
     try {
-      // Get email and password from sign-up form (like Angular implementation)
       final email = _signUpEmailController.text;
       final password = _signUpPasswordController.text;
 

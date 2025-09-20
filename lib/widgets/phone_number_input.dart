@@ -44,7 +44,6 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
   @override
   void didUpdateWidget(PhoneNumberInput oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Handle case where selectedCountryCode changes after widget is built
     if (widget.selectedCountryCode != null && widget.selectedCountryCode != oldWidget.selectedCountryCode) {
       setState(() {
         _selectedCountryCode = widget.selectedCountryCode!;
@@ -101,13 +100,8 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
               _selectedCountryCode = phone.countryCode;
               _completePhoneNumber = phone.completeNumber;
             });
-
-            // Call the callbacks
             widget.onCountryCodeChanged(phone.countryCode);
             widget.onPhoneNumberChanged(phone.completeNumber);
-
-            // Don't manually update the controller - let IntlPhoneField handle it
-            // This prevents the infinite loop issue
           },
           onCountryChanged: (country) {
             setState(() {

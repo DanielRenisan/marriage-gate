@@ -7,7 +7,7 @@ class ProfileCheckService {
   final AuthService _authService = AuthService();
   final MemberService _memberService = MemberService();
 
-  // Check if user has profiles (exact Angular implementation)
+  // Check if user has profiles ()
   Future<bool> hasProfiles() async {
     try {
       final token = await _authService.getAuthToken();
@@ -15,7 +15,7 @@ class ProfileCheckService {
         return false;
       }
 
-      final profiles = await _memberService.getProfiles();
+      final profiles = await _memberService.getMemberProfiles();
       return profiles.isNotEmpty;
     } catch (e) {
       debugPrint('Error checking profiles: $e');
@@ -24,14 +24,14 @@ class ProfileCheckService {
   }
 
   // Get user profiles
-  Future<List<UserProfile>> getUserProfiles() async {
+  Future<List<MemberProfile>> getUserProfiles() async {
     try {
       final token = await _authService.getAuthToken();
       if (token == null) {
         return [];
       }
 
-      return await _memberService.getProfiles();
+      return await _memberService.getMemberProfiles();
     } catch (e) {
       debugPrint('Error getting user profiles: $e');
       return [];
@@ -41,7 +41,7 @@ class ProfileCheckService {
   // Check if user is logged in and has profiles
   Future<Map<String, dynamic>> checkUserStatus() async {
     final isLoggedIn = await _authService.isLoggedIn();
-    
+
     if (!isLoggedIn) {
       return {
         'isLoggedIn': false,
@@ -53,7 +53,7 @@ class ProfileCheckService {
     }
 
     final hasProfiles = await this.hasProfiles();
-    
+
     if (hasProfiles) {
       return {
         'isLoggedIn': true,

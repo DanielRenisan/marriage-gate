@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -21,15 +22,17 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   try {
-    // Initialize Firebase
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   } catch (e) {
+    if (kDebugMode) {
+      print('Firebase initialization error: $e');
+    }
   }
-  
+
   runApp(const MyApp());
 }
 
@@ -51,18 +54,15 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context) => DataProvider()),
             ChangeNotifierProxyProvider<MemberProvider, ProfileViewModel>(
               create: (context) => ProfileViewModel(context.read<MemberProvider>()),
-              update: (context, memberProvider, previous) => 
-                previous ?? ProfileViewModel(memberProvider),
+              update: (context, memberProvider, previous) => previous ?? ProfileViewModel(memberProvider),
             ),
             ChangeNotifierProxyProvider<MemberProvider, MatchesViewModel>(
               create: (context) => MatchesViewModel(context.read<MemberProvider>()),
-              update: (context, memberProvider, previous) => 
-                previous ?? MatchesViewModel(memberProvider),
+              update: (context, memberProvider, previous) => previous ?? MatchesViewModel(memberProvider),
             ),
             ChangeNotifierProxyProvider<MemberProvider, ChatViewModel>(
               create: (context) => ChatViewModel(context.read<MemberProvider>()),
-              update: (context, memberProvider, previous) => 
-                previous ?? ChatViewModel(memberProvider),
+              update: (context, memberProvider, previous) => previous ?? ChatViewModel(memberProvider),
             ),
           ],
           child: MaterialApp(

@@ -1,5 +1,3 @@
-// Matching Profile Response Models for the new API structure
-
 class MatchingProfileResponse {
   final MatchingProfileResult result;
   final bool isError;
@@ -43,9 +41,7 @@ class MatchingProfileResult {
 
   factory MatchingProfileResult.fromJson(Map<String, dynamic> json) {
     return MatchingProfileResult(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((item) => MatchingProfile.fromJson(item))
-          .toList() ?? [],
+      data: (json['data'] as List<dynamic>?)?.map((item) => MatchingProfile.fromJson(item)).toList() ?? [],
       totalCount: json['totalCount'] ?? 0,
       pageNumber: json['pageNumber'] ?? 1,
       pageSize: json['pageSize'] ?? 10,

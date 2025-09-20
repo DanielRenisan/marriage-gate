@@ -109,7 +109,6 @@ enum UserRole {
   final int value;
 }
 
-// Login and Token Types (matching Angular implementation)
 enum LoginType {
   email(1),
   phoneNumber(2),

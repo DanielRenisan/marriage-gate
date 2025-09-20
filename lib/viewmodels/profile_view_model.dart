@@ -7,15 +7,14 @@ import 'package:matrimony_flutter/viewmodels/base_view_model.dart';
 class ProfileViewModel extends BaseViewModel {
   final AuthService _authService = AuthService();
   final MemberProvider _memberProvider;
-  
-  UserProfile? _userProfile;
+
+  MemberProfile? _userProfile;
   bool _isProfileLoaded = false;
 
   ProfileViewModel(this._memberProvider);
 
-  UserProfile? get userProfile => _userProfile;
+  MemberProfile? get userProfile => _userProfile;
   bool get isProfileLoaded => _isProfileLoaded;
-
 
   Future<void> loadUserProfile() async {
     await handleAsyncOperation(() async {
@@ -38,13 +37,12 @@ class ProfileViewModel extends BaseViewModel {
 
   String calculateAge(String? dateOfBirth) {
     if (dateOfBirth == null) return 'N/A';
-    
+
     try {
       final birthDate = DateTime.parse(dateOfBirth);
       final now = DateTime.now();
       int age = now.year - birthDate.year;
-      if (now.month < birthDate.month || 
-          (now.month == birthDate.month && now.day < birthDate.day)) {
+      if (now.month < birthDate.month || (now.month == birthDate.month && now.day < birthDate.day)) {
         age--;
       }
       return '$age years';
@@ -55,25 +53,39 @@ class ProfileViewModel extends BaseViewModel {
 
   String getBloodGroupText(int? bloodGroup) {
     switch (bloodGroup) {
-      case 1: return 'A+';
-      case 2: return 'A-';
-      case 3: return 'B+';
-      case 4: return 'B-';
-      case 5: return 'AB+';
-      case 6: return 'AB-';
-      case 7: return 'O+';
-      case 8: return 'O-';
-      default: return 'Not specified';
+      case 1:
+        return 'A+';
+      case 2:
+        return 'A-';
+      case 3:
+        return 'B+';
+      case 4:
+        return 'B-';
+      case 5:
+        return 'AB+';
+      case 6:
+        return 'AB-';
+      case 7:
+        return 'O+';
+      case 8:
+        return 'O-';
+      default:
+        return 'Not specified';
     }
   }
 
   String getBodyTypeText(int? bodyType) {
     switch (bodyType) {
-      case 1: return 'Average';
-      case 2: return 'Slim';
-      case 3: return 'Athletic';
-      case 4: return 'Heavy';
-      default: return 'Not specified';
+      case 1:
+        return 'Average';
+      case 2:
+        return 'Slim';
+      case 3:
+        return 'Athletic';
+      case 4:
+        return 'Heavy';
+      default:
+        return 'Not specified';
     }
   }
 
@@ -127,5 +139,20 @@ class ProfileViewModel extends BaseViewModel {
   void navigateToPrivacySettings() {
     // TODO: Implement navigation to privacy settings
     debugPrint('Navigate to privacy settings');
+  }
+
+  void navigateToUserDetails() {
+    // TODO: Implement navigation to user details
+    debugPrint('Navigate to user details');
+  }
+
+  void navigateToMembersList() {
+    // TODO: Implement navigation to members list
+    debugPrint('Navigate to members list');
+  }
+
+  void navigateToUpgradePlans() {
+    // TODO: Implement navigation to upgrade plans
+    debugPrint('Navigate to upgrade plans');
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/models/member.dart';
 import 'package:matrimony_flutter/models/profile_response.dart';
 import 'package:matrimony_flutter/models/profile_request.dart';
-import 'package:matrimony_flutter/models/member_registration_request.dart';
 import 'package:matrimony_flutter/models/matching_profiles_request.dart';
 import 'package:matrimony_flutter/models/notification_item.dart';
 import 'package:matrimony_flutter/services/member_service.dart';
@@ -14,8 +13,8 @@ import '../models/matching_profile_response.dart';
 class MemberProvider extends ChangeNotifier {
   final MemberService _memberService = MemberService();
 
-  List<UserProfile> _memberProfiles = [];
-  List<UserProfile> get memberProfiles => _memberProfiles;
+  List<MemberProfile> _memberProfiles = [];
+  List<MemberProfile> get memberProfiles => _memberProfiles;
 
   MatchingProfileResponse? _matchingProfilesResponse;
   MatchingProfileResponse? get matchingProfilesResponse => _matchingProfilesResponse;
@@ -25,8 +24,8 @@ class MemberProvider extends ChangeNotifier {
   int get matchingProfilesTotalCount => _matchingProfilesResponse?.result.totalCount ?? 0;
   int get currentMatchingPage => _matchingProfilesResponse?.result.pageNumber ?? 1;
 
-  UserProfile? _currentUserProfile;
-  UserProfile? get currentUserProfile => _currentUserProfile;
+  MemberProfile? _currentUserProfile;
+  MemberProfile? get currentUserProfile => _currentUserProfile;
 
   List<ChatParticipant> _chatParticipants = [];
   List<ChatParticipant> get chatParticipants => _chatParticipants;
@@ -37,8 +36,8 @@ class MemberProvider extends ChangeNotifier {
   List<FriendRequest> _friendRequests = [];
   List<FriendRequest> get friendRequests => _friendRequests;
 
-  List<UserProfile> _friends = [];
-  List<UserProfile> get friends => _friends;
+  List<MemberProfile> _friends = [];
+  List<MemberProfile> get friends => _friends;
 
   List<NotificationItem> _notifications = [];
   List<NotificationItem> get allNotifications => _notifications;
@@ -99,13 +98,14 @@ class MemberProvider extends ChangeNotifier {
       return name.contains(searchLower);
     }).toList();
   }
+  //
 
   Future<void> loadMemberProfiles() async {
     try {
       _isLoadingProfiles = true;
       notifyListeners();
 
-      _memberProfiles = await _memberService.getProfiles();
+      _memberProfiles = await _memberService.getMemberProfiles();
 
       _isLoadingProfiles = false;
       notifyListeners();
@@ -116,12 +116,12 @@ class MemberProvider extends ChangeNotifier {
     }
   }
 
-  void setMemberProfiles(List<UserProfile> profiles) {
+  void setMemberProfiles(List<MemberProfile> profiles) {
     _memberProfiles = profiles;
     notifyListeners();
   }
 
-  void setCurrentUserProfile(UserProfile profile) {
+  void setCurrentUserProfile(MemberProfile profile) {
     _currentUserProfile = profile;
     loadMatchingProfiles(null, profile.id, 1, 20);
     notifyListeners();
@@ -142,53 +142,6 @@ class MemberProvider extends ChangeNotifier {
       throw Exception('Failed to load matching profiles: $e');
     }
   }
-
-  Future<List<MatchingProfile>> loadMoreMatchingProfiles(
-      MatchingProfilesRequest? filters, String userId, int pageNumber, int pageSize) async {
-    try {
-      final response = await _memberService.getAllMatchedProfiles(filters, userId, pageNumber, pageSize);
-
-      if (_matchingProfilesResponse != null) {
-        final existingProfiles = List<MatchingProfile>.from(_matchingProfilesResponse!.result.data);
-        existingProfiles.addAll(response.result.data);
-
-        _matchingProfilesResponse = MatchingProfileResponse(
-          result: MatchingProfileResult(
-            data: existingProfiles,
-            totalCount: response.result.totalCount,
-            pageNumber: response.result.pageNumber,
-            pageSize: response.result.pageSize,
-          ),
-          isError: response.isError,
-          error: response.error,
-        );
-      } else {
-        _matchingProfilesResponse = response;
-      }
-
-      notifyListeners();
-      return response.result.data;
-    } catch (e) {
-      throw Exception('Failed to load more matching profiles: $e');
-    }
-  }
-
-  // Load matching profiles with custom filters
-  // Future<void> loadMatchingProfilesWithFilters(MatchingProfilesRequest filters, int pageNumber, int pageSize) async {
-  //   try {
-  //     _isLoadingMatchingProfiles = true;
-  //     notifyListeners();
-
-  //     _matchingProfiles = await _memberService.getMatchingProfiles(filters, pageNumber, pageSize);
-
-  //     _isLoadingMatchingProfiles = false;
-  //     notifyListeners();
-  //   } catch (e) {
-  //     _isLoadingMatchingProfiles = false;
-  //     notifyListeners();
-  //     throw Exception('Failed to load matching profiles with filters: $e');
-  //   }
-  // }
 
   Future<void> loadChatParticipants() async {
     try {
@@ -299,7 +252,7 @@ class MemberProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  UserProfile? getProfileById(String id) {
+  MemberProfile? getProfileById(String id) {
     try {
       return _memberProfiles.firstWhere((profile) => profile.id == id);
     } catch (e) {
@@ -366,19 +319,9 @@ class MemberProvider extends ChangeNotifier {
     }
   }
 
-  Future<ProfileResponse> createProfile(ProfileRequest profileRequest) async {
+  Future<ProfileResponse> createMemberProfile(ProfileRequest profileRequest) async {
     try {
-      final response = await _memberService.createProfile(profileRequest);
-      return response;
-    } catch (e) {
-      throw Exception('Failed to create profile: $e');
-    }
-  }
-
-  Future<ProfileResponse> createMemberProfile(MemberRegistrationRequest registrationRequest) async {
-    try {
-      final response = await _memberService.createMemberProfile(registrationRequest);
-      await loadMemberProfiles();
+      final response = await _memberService.createMemberProfile(profileRequest);
       return response;
     } catch (e) {
       throw Exception('Failed to create profile: $e');

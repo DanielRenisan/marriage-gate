@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:matrimony_flutter/models/education_qualification.dart';
-import 'package:matrimony_flutter/models/community.dart';
 import 'package:matrimony_flutter/models/job_type.dart';
 import 'package:matrimony_flutter/models/religion.dart';
 import 'package:matrimony_flutter/models/member.dart' as member_models;
 import 'package:matrimony_flutter/utils/constants.dart';
+
+import '../models/community.dart';
 
 class DataService {
   final String _baseUrl = ApiEndpoints.baseUrl;
@@ -14,8 +15,7 @@ class DataService {
   Future<List<EducationQualification>> getEducationQualifications() async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getEducationQualifications}');
-      
-      
+
       final response = await http.get(
         url,
         headers: {
@@ -24,7 +24,6 @@ class DataService {
           'Access-Control-Allow-Origin': '*',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -51,8 +50,7 @@ class DataService {
   Future<List<Community>> getCommunities() async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getCommunities}');
-      
-      
+
       final response = await http.get(
         url,
         headers: {
@@ -61,7 +59,6 @@ class DataService {
           'Access-Control-Allow-Origin': '*',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -88,8 +85,7 @@ class DataService {
   Future<List<JobType>> getJobTypes() async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getJobTypes}');
-      
-      
+
       final response = await http.get(
         url,
         headers: {
@@ -98,7 +94,6 @@ class DataService {
           'Access-Control-Allow-Origin': '*',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -125,8 +120,7 @@ class DataService {
   Future<List<Religion>> getReligions() async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getReligions}');
-      
-      
+
       final response = await http.get(
         url,
         headers: {
@@ -135,7 +129,6 @@ class DataService {
           'Access-Control-Allow-Origin': '*',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -162,8 +155,7 @@ class DataService {
   Future<List<member_models.Country>> getCountries() async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getCountryCodes}');
-      
-      
+
       final response = await http.get(
         url,
         headers: {
@@ -173,13 +165,10 @@ class DataService {
         },
       );
 
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['Result'] != null) {
-          return (data['Result'] as List)
-              .map((item) => member_models.Country.fromJson(item))
-              .toList();
+          return (data['Result'] as List).map((item) => member_models.Country.fromJson(item)).toList();
         } else {
           throw Exception('Invalid response format: Result not found');
         }

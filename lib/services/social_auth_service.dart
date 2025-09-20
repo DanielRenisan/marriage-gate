@@ -1,40 +1,30 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:matrimony_flutter/services/auth_service.dart';
 import 'package:matrimony_flutter/models/api_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:matrimony_flutter/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SocialAuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile'], signInOption: SignInOption.standard);
-  final AuthService _authService = AuthService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  // Google Sign In - Firebase implementation
   Future<Map<String, dynamic>> signInWithGoogle(String clientToken) async {
     try {
-
-      // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
         return {'success': false, 'error': 'Sign in cancelled by user', 'errorCode': 'USER_CANCELLED'};
       }
 
-
-      // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       if (googleAuth.idToken == null) {
         await _googleSignIn.signOut();
         return {'success': false, 'error': 'Failed to obtain Google ID token', 'errorCode': 'NO_ID_TOKEN'};
       }
-
-      // Validate the ID token
       if (googleAuth.idToken == null || googleAuth.idToken!.isEmpty) {
         await _googleSignIn.signOut();
         return {'success': false, 'error': 'Google ID token is null or empty', 'errorCode': 'EMPTY_ID_TOKEN'};
@@ -47,12 +37,10 @@ class SocialAuthService {
         firstName = nameParts.isNotEmpty ? nameParts.first : '';
         lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
       }
-
-      // Prepare the request body exactly like Angular
       final body = {
-        'loginType': 3, // LoginType.Google = 3
-        'socialToken': googleAuth.idToken ?? '', // Use Google ID token directly, empty string if null
-        'socialClientId': '', // Empty for Google as per Angular
+        'loginType': 3,
+        'socialToken': googleAuth.idToken ?? '',
+        'socialClientId': '',
         'firstName': firstName,
         'lastName': lastName,
         'email': googleUser.email,
@@ -88,30 +76,22 @@ class SocialAuthService {
     }
   }
 
-  // Facebook Sign In - Exact Angular implementation
   Future<Map<String, dynamic>> signInWithFacebook(String clientToken) async {
     try {
-
-      // Sign out first to ensure fresh login
       await FacebookAuth.instance.logOut();
-
-      // Trigger the authentication flow
       final LoginResult result = await FacebookAuth.instance.login(
         permissions: ['email', 'public_profile'],
       );
 
-
       if (result.status != LoginStatus.success) {
         return {'success': false, 'error': 'Facebook sign in failed: ${result.status}', 'errorCode': 'FACEBOOK_LOGIN_FAILED'};
       }
-
 
       // Validate access token
       if (result.accessToken?.token == null || result.accessToken!.token.isEmpty) {
         await FacebookAuth.instance.logOut();
         return {'success': false, 'error': 'Failed to obtain Facebook access token', 'errorCode': 'NO_FACEBOOK_TOKEN'};
       }
-
 
       // Get user data with error handling
       Map<String, dynamic> userData = {};
@@ -129,19 +109,15 @@ class SocialAuthService {
           'id': '',
         };
       }
-
-      // Prepare the request body exactly like Angular
       final body = {
-        'loginType': 4, // LoginType.Facebook = 4
-        'socialToken': result.accessToken!.token, // Facebook access token
-        'socialClientId': '2480872695583098', // fbAppId from Angular
+        'loginType': 4,
+        'socialToken': result.accessToken!.token,
+        'socialClientId': '2480872695583098',
         'firstName': userData['first_name'] ?? '',
         'lastName': userData['last_name'] ?? '',
         'email': userData['email'] ?? '',
       };
 
-
-      // Send to backend using the exact same endpoint as Angular
       final response = await _makeSocialLoginRequest(body, clientToken);
 
       return {
@@ -173,7 +149,7 @@ class SocialAuthService {
     }
   }
 
-  // Make social login request - Exact Angular implementation
+  // Make social login request -
   Future<ApiResponse<Map<String, dynamic>>> _makeSocialLoginRequest(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('${ApiEndpoints.baseUrl}Auth/social-login');
@@ -190,7 +166,6 @@ class SocialAuthService {
         },
         body: jsonBody,
       );
-
 
       final data = json.decode(response.body);
 
@@ -209,7 +184,6 @@ class SocialAuthService {
       await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
       await FacebookAuth.instance.logOut();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

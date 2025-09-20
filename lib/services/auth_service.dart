@@ -9,13 +9,22 @@ import 'package:http/http.dart' as http;
 class AuthService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final String _baseUrl = ApiEndpoints.baseUrl;
+//
+  Future<bool> isLoggedIn() async {
+    final token = await getAuthToken();
+    return token != null;
+  }
 
-  // Get Client Token - Exact Angular implementation
+//
+  Future<String?> getAuthToken() async {
+    return await _storage.read(key: 'token');
+  }
+
+  // Get Client Token -
   Future<TokenResult> getLoginClientToken(Map<String, dynamic> clientData) async {
     try {
       final url =
           Uri.parse('$_baseUrl${ApiEndpoints.clientToken}?name=${clientData['name']}&secretKey=${clientData['secretKey']}');
-
 
       final response = await http.get(
         url,
@@ -25,7 +34,6 @@ class AuthService {
           'Access-Control-Allow-Origin': '*',
         },
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -50,11 +58,10 @@ class AuthService {
     }
   }
 
-  // Sign Up - Exact Angular implementation
+  // Sign Up -
   Future<ApiResponse<Map<String, dynamic>>> signUp(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.register}');
-
 
       final response = await http.post(
         url,
@@ -68,7 +75,6 @@ class AuthService {
         body: json.encode(body),
       );
 
-
       final data = json.decode(response.body);
 
       // Parse the API response using the new model
@@ -81,7 +87,7 @@ class AuthService {
     }
   }
 
-  // Login - Exact Angular implementation with User → Member model
+  // Login -  with User → Member model
   Future<ApiResponse<Map<String, dynamic>>> login(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.login}');
@@ -98,13 +104,12 @@ class AuthService {
         body: json.encode(body),
       );
 
-
       final data = json.decode(response.body);
 
       // Parse the API response
       final apiResponse = ApiResponse.fromJson(data, (json) => json);
 
-      // Check token type for navigation logic (exact Angular implementation)
+      // Check token type for navigation logic ()
       if (apiResponse.result != null && apiResponse.result!['tokenType'] != null) {
         final tokenType = apiResponse.result!['tokenType'];
 
@@ -133,7 +138,7 @@ class AuthService {
     }
   }
 
-  // Forgot Password - Exact Angular implementation
+  // Forgot Password -
   Future<ApiResponse<Map<String, dynamic>>> forgotPassword(bool isEmail, String clientToken, String param) async {
     try {
       final queryParam = isEmail ? 'email' : 'phoneNumber';
@@ -148,7 +153,6 @@ class AuthService {
           'Authorization': 'Bearer $clientToken',
         },
       );
-
 
       final data = json.decode(response.body);
 
@@ -167,7 +171,7 @@ class AuthService {
     }
   }
 
-  // OTP Verification - Exact Angular implementation
+  // OTP Verification -
   Future<ApiResponse<Map<String, dynamic>>> verifyOtp(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.otpVerification}');
@@ -183,11 +187,9 @@ class AuthService {
         body: json.encode(body),
       );
 
-
       final data = json.decode(response.body);
 
       if (response.statusCode == 200 && data['Result'] != null) {
-        // Set auth token after successful OTP verification
         await setAuthToken(data['Result']['token']);
         await setUser(data['Result']['token']);
         return ApiResponse.fromJson(data, (json) => json);
@@ -202,7 +204,6 @@ class AuthService {
     }
   }
 
-  // Email Verification - Exact Angular implementation
   Future<ApiResponse<Map<String, dynamic>>> emailVerification(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.emailVerification}');
@@ -217,7 +218,6 @@ class AuthService {
         },
         body: json.encode(body),
       );
-
 
       final data = json.decode(response.body);
 
@@ -237,7 +237,6 @@ class AuthService {
     }
   }
 
-  // Reset Password - Exact Angular implementation
   Future<ApiResponse<Map<String, dynamic>>> resetPassword(Map<String, dynamic> body, String clientToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.resetPassword}');
@@ -253,7 +252,6 @@ class AuthService {
         body: json.encode(body),
       );
 
-
       final data = json.decode(response.body);
 
       return ApiResponse.fromJson(data, (json) => json);
@@ -265,13 +263,8 @@ class AuthService {
     }
   }
 
-  // Token Management - Exact Angular implementation
   Future<void> setAuthToken(String token) async {
     await _storage.write(key: 'token', value: token);
-  }
-
-  Future<String?> getAuthToken() async {
-    return await _storage.read(key: 'token');
   }
 
   Future<void> removeAuthToken() async {
@@ -294,11 +287,6 @@ class AuthService {
     return null;
   }
 
-  Future<bool> isLoggedIn() async {
-    final token = await getAuthToken();
-    return token != null;
-  }
-
   Map<String, dynamic> getTokenDecodeData(String token) {
     try {
       final parts = token.split('.');
@@ -310,8 +298,6 @@ class AuthService {
       final normalized = base64Url.normalize(payload);
       final resp = utf8.decode(base64Url.decode(normalized));
       final payloadMap = json.decode(resp);
-
-      // Add LoginUserType like Angular implementation
       if (payloadMap['UserType'] == 'Member') {
         payloadMap['LoginUserType'] = 'Member';
       } else if (payloadMap['UserType'] == 'Agent') {
@@ -415,8 +401,7 @@ class AuthService {
       } else if (parsed['V2'] == 'False') {
         parsed['V2'] = false;
       }
-    } catch (e) {
-    }
+    } catch (e) {}
 
     return parsed;
   }
@@ -465,8 +450,7 @@ class AuthService {
       info['tokenType'] = payload['TokenType'] ?? 'Unknown';
       info['userType'] = payload['UserType'] ?? 'Unknown';
       info['clientAppType'] = payload['ClientAppType'] ?? 'Unknown';
-    } catch (e) {
-    }
+    } catch (e) {}
 
     return info;
   }
@@ -589,7 +573,6 @@ class AuthService {
         'userDetails': userDetails,
       };
 
-
       final response = await http.post(
         url,
         headers: {
@@ -601,7 +584,6 @@ class AuthService {
         },
         body: json.encode(body),
       );
-
 
       final data = json.decode(response.body);
 
@@ -637,11 +619,10 @@ class AuthService {
     }
   }
 
-  // Get User Details - Called after successful signup
+//
   Future<ApiResponse<User>> getUserDetails(String authToken) async {
     try {
       final url = Uri.parse('$_baseUrl${ApiEndpoints.getUserDetails}');
-
 
       final response = await http.get(
         url,
@@ -652,7 +633,6 @@ class AuthService {
           'Authorization': 'Bearer $authToken',
         },
       );
-
 
       final data = json.decode(response.body);
 

@@ -89,7 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildProfileHeader(UserProfile profile, ProfileViewModel viewModel) {
+  Widget _buildProfileHeader(MemberProfile profile, ProfileViewModel viewModel) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -109,9 +109,7 @@ class _ProfileViewState extends State<ProfileView> {
           CircleAvatar(
             radius: 50.r,
             backgroundImage: NetworkImage(
-              profile.profileImage ?? 
-              profile.profileImages.firstOrNull?.url ?? 
-              'https://via.placeholder.com/100x100',
+              profile.profileImage ?? profile.profileImages.firstOrNull?.url ?? 'https://via.placeholder.com/100x100',
             ),
           ),
           SizedBox(width: 16.w),
@@ -153,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildProfileSections(UserProfile profile, ProfileViewModel viewModel) {
+  Widget _buildProfileSections(MemberProfile profile, ProfileViewModel viewModel) {
     return Column(
       children: [
         _buildInfoSection('Personal Information', [
@@ -209,7 +207,8 @@ class _ProfileViewState extends State<ProfileView> {
           SizedBox(height: 16.h),
           _buildInfoSection('Match Preferences', [
             _buildInfoRow('Preferred Gender', profile.matchPreferences!.gender ?? 'Not specified'),
-            _buildInfoRow('Age Range', '${profile.matchPreferences!.minAge ?? 'N/A'} - ${profile.matchPreferences!.maxAge ?? 'N/A'}'),
+            _buildInfoRow(
+                'Age Range', '${profile.matchPreferences!.minAge ?? 'N/A'} - ${profile.matchPreferences!.maxAge ?? 'N/A'}'),
             _buildInfoRow('Preferred Caste', profile.matchPreferences!.caste ?? 'Not specified'),
             _buildInfoRow('Preferred Occupation', profile.matchPreferences!.occupation ?? 'Not specified'),
             _buildInfoRow('Preferred Income', profile.matchPreferences!.income ?? 'Not specified'),

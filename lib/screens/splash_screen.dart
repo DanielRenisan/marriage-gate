@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkUserStatusAndNavigate() async {
-    // Add a small delay to show splash screen
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
@@ -33,19 +32,14 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
 
       if (!isLoggedIn) {
-        // User is not logged in, navigate to login
         Navigator.pushReplacementNamed(context, '/login');
         return;
       }
-
-      // User is logged in, get auth token
       final authToken = await _authService.getAuthToken();
       if (authToken == null) {
         Navigator.pushReplacementNamed(context, '/login');
         return;
       }
-
-      // Step 1: Get user details (GET /api/User)
       final userResponse = await _authService.getUserDetails(authToken);
 
       if (!mounted) return;
@@ -61,13 +55,11 @@ class _SplashScreenState extends State<SplashScreen> {
       final user = userResponse.result!;
       userProvider.setCurrentUser(user);
 
-      // Check if user type is Member
       final userType = await _authService.getUserType();
 
       if (!mounted) return;
 
       if (userType == 'Member') {
-        // Step 2: Get member profiles (GET /api/Profile/user)
         final memberProvider = Provider.of<MemberProvider>(context, listen: false);
 
         try {
@@ -76,28 +68,22 @@ class _SplashScreenState extends State<SplashScreen> {
           if (!mounted) return;
 
           if (memberProvider.memberProfiles.isEmpty) {
-            // No members found - navigate to member registration
             Navigator.pushReplacementNamed(context, '/member-registration');
           } else if (memberProvider.memberProfiles.length == 1) {
-            // Single member - set as current and navigate to matching profiles (main screen)
             memberProvider.setCurrentUserProfile(memberProvider.memberProfiles.first);
             Navigator.pushReplacementNamed(context, '/main');
           } else {
-            // Multiple members - navigate to profile selection
             Navigator.pushReplacementNamed(context, '/profile-selection');
           }
         } catch (e) {
-          // If there's an error loading profiles, navigate to member registration
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/member-registration');
           }
         }
       } else {
-        // Non-member user, navigate to appropriate screen
         Navigator.pushReplacementNamed(context, '/home');
       }
     } catch (e) {
-      // If there's an error, navigate to login
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/login');
       }
@@ -112,7 +98,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // App Logo
             Container(
               width: 120,
               height: 120,
@@ -135,10 +120,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 24),
-
-            // App Name
             const Text(
-              'Matrimony',
+              'Marriage Gate',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -156,8 +139,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 40),
-
-            // Loading indicator
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),

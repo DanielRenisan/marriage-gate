@@ -1,6 +1,3 @@
-// Matching Profiles Request Model - Based on Angular curl request
-// Matches the exact structure from the working curl request
-
 import 'salary_filter.dart';
 
 class MatchingProfilesRequest {

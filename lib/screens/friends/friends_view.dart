@@ -174,7 +174,7 @@ class _FriendsViewState extends State<FriendsView> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildFriendCard(UserProfile friend) {
+  Widget _buildFriendCard(MemberProfile friend) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
@@ -194,9 +194,7 @@ class _FriendsViewState extends State<FriendsView> with SingleTickerProviderStat
         leading: CircleAvatar(
           radius: 30.r,
           backgroundImage: NetworkImage(
-            friend.profileImages.isNotEmpty 
-                ? friend.profileImages.first.url 
-                : 'https://via.placeholder.com/60x60',
+            friend.profileImages.isNotEmpty ? friend.profileImages.first.url : 'https://via.placeholder.com/60x60',
           ),
         ),
         title: Text(
@@ -234,13 +232,12 @@ class _FriendsViewState extends State<FriendsView> with SingleTickerProviderStat
 
   String _calculateAge(String? dateOfBirth) {
     if (dateOfBirth == null) return 'N/A';
-    
+
     try {
       final birthDate = DateTime.parse(dateOfBirth);
       final now = DateTime.now();
       int age = now.year - birthDate.year;
-      if (now.month < birthDate.month || 
-          (now.month == birthDate.month && now.day < birthDate.day)) {
+      if (now.month < birthDate.month || (now.month == birthDate.month && now.day < birthDate.day)) {
         age--;
       }
       return '$age years';

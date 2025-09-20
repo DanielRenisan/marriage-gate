@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _loadUserProfile() async {
     final authService = AuthService();
     final memberProvider = context.read<MemberProvider>();
-    
+
     try {
       final token = await authService.getAuthToken();
       if (token != null) {
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Consumer<MemberProvider>(
         builder: (context, memberProvider, child) {
           final profile = memberProvider.currentUserProfile;
-          
+
           if (profile == null) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileHeader(UserProfile profile) {
+  Widget _buildProfileHeader(MemberProfile profile) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -105,9 +105,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 CircleAvatar(
                   radius: 60.r,
                   backgroundImage: NetworkImage(
-                    profile.profileImage ?? 
-                    profile.profileImages.firstOrNull?.url ?? 
-                    'https://via.placeholder.com/120x120?text=No+Image',
+                    profile.profileImage ??
+                        profile.profileImages.firstOrNull?.url ??
+                        'https://via.placeholder.com/120x120?text=No+Image',
                   ),
                 ),
                 Positioned(
@@ -132,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 16.h),
             Text(
-              '${profile.firstName ?? ''} ${profile.lastName ?? ''}',
+              '${profile.firstName} ${profile.lastName}',
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileSections(UserProfile profile) {
+  Widget _buildProfileSections(MemberProfile profile) {
     return Column(
       children: [
         _buildSection(
@@ -184,7 +184,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildInfoRow('Marital Status', profile.maritalStatus ?? 'Not specified'),
             _buildInfoRow('Height', '${profile.height} cm'),
             _buildInfoRow('Weight', '${profile.weight} kg'),
-            _buildInfoRow('Blood Group', profile.bloodGroup == 1 ? 'A+' : profile.bloodGroup == 2 ? 'A-' : profile.bloodGroup == 3 ? 'B+' : profile.bloodGroup == 4 ? 'B-' : profile.bloodGroup == 5 ? 'AB+' : profile.bloodGroup == 6 ? 'AB-' : profile.bloodGroup == 7 ? 'O+' : profile.bloodGroup == 8 ? 'O-' : 'Not specified'),
+            _buildInfoRow(
+                'Blood Group',
+                profile.bloodGroup == 1
+                    ? 'A+'
+                    : profile.bloodGroup == 2
+                        ? 'A-'
+                        : profile.bloodGroup == 3
+                            ? 'B+'
+                            : profile.bloodGroup == 4
+                                ? 'B-'
+                                : profile.bloodGroup == 5
+                                    ? 'AB+'
+                                    : profile.bloodGroup == 6
+                                        ? 'AB-'
+                                        : profile.bloodGroup == 7
+                                            ? 'O+'
+                                            : profile.bloodGroup == 8
+                                                ? 'O-'
+                                                : 'Not specified'),
             _buildInfoRow('Complexion', profile.complexion ?? 'Not specified'),
           ],
         ),
@@ -193,8 +211,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'Contact Information',
           Icons.contact_mail,
           [
-            _buildInfoRow('Email', profile.email ?? 'Not specified'),
-            _buildInfoRow('Phone', profile.phoneNumber ?? 'Not specified'),
+            _buildInfoRow('Email', profile.email),
+            _buildInfoRow('Phone', profile.phoneNumber),
             _buildInfoRow('Address', profile.address ?? 'Not specified'),
             _buildInfoRow('City', profile.city ?? 'Not specified'),
             _buildInfoRow('State', profile.state ?? 'Not specified'),
@@ -245,11 +263,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildInfoRow('Diet', profile.diet ?? 'Not specified'),
             _buildInfoRow('Drink Habit', profile.drinkHabit ?? 'Not specified'),
             _buildInfoRow('Smoke Habit', profile.smokeHabitText ?? 'Not specified'),
-            _buildInfoRow('Body Type', profile.bodyType == 1 ? 'Average' : profile.bodyType == 2 ? 'Slim' : profile.bodyType == 3 ? 'Athletic' : profile.bodyType == 4 ? 'Heavy' : 'Not specified'),
+            _buildInfoRow(
+                'Body Type',
+                profile.bodyType == 1
+                    ? 'Average'
+                    : profile.bodyType == 2
+                        ? 'Slim'
+                        : profile.bodyType == 3
+                            ? 'Athletic'
+                            : profile.bodyType == 4
+                                ? 'Heavy'
+                                : 'Not specified'),
             if (profile.knownLanguages != null && profile.knownLanguages!.isNotEmpty)
               _buildInfoRow('Known Languages', profile.knownLanguages!),
-            if (profile.disability.isNotEmpty)
-              _buildInfoRow('Disability', profile.disability),
+            if (profile.disability.isNotEmpty) _buildInfoRow('Disability', profile.disability),
           ],
         ),
         if (profile.matchPreferences != null) ...[
@@ -259,7 +286,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Icons.favorite,
             [
               _buildInfoRow('Preferred Gender', profile.matchPreferences!.gender ?? 'Not specified'),
-              _buildInfoRow('Age Range', '${profile.matchPreferences!.minAge ?? 'N/A'} - ${profile.matchPreferences!.maxAge ?? 'N/A'}'),
+              _buildInfoRow(
+                  'Age Range', '${profile.matchPreferences!.minAge ?? 'N/A'} - ${profile.matchPreferences!.maxAge ?? 'N/A'}'),
               _buildInfoRow('Preferred Marital Status', profile.matchPreferences!.maritalStatus ?? 'Not specified'),
               _buildInfoRow('Preferred Religion', profile.matchPreferences!.religion ?? 'Not specified'),
               _buildInfoRow('Preferred Caste', profile.matchPreferences!.caste ?? 'Not specified'),
@@ -396,13 +424,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String _calculateAge(String? dateOfBirth) {
     if (dateOfBirth == null) return 'N/A';
-    
+
     try {
       final birthDate = DateTime.parse(dateOfBirth);
       final now = DateTime.now();
       int age = now.year - birthDate.year;
-      if (now.month < birthDate.month || 
-          (now.month == birthDate.month && now.day < birthDate.day)) {
+      if (now.month < birthDate.month || (now.month == birthDate.month && now.day < birthDate.day)) {
         age--;
       }
       return '$age years';
@@ -440,7 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _deleteProfile() async {
     final memberProvider = context.read<MemberProvider>();
     final profile = memberProvider.currentUserProfile;
-    
+
     if (profile?.id == null) {
       Fluttertoast.showToast(
         msg: 'Profile not found',

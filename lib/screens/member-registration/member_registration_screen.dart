@@ -426,12 +426,9 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
       final memberProvider = Provider.of<MemberProvider>(context, listen: false);
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-      // Handle profile images - upload them first and get URLs
       List<String> imageUrls = [];
       if (_formData['profileImages'] != null && _formData['profileImages'] is List) {
         final List<File> profileImages = _formData['profileImages'];
-
-        // Upload each image and get URLs
         for (final File image in profileImages) {
           try {
             final imageUrl = await memberProvider.uploadProfileImage(image);
@@ -443,8 +440,6 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
       }
 
       final token = await authService.getAuthToken();
-
-      // Create ProfileRequest object with correct structure
       final profileRequest = ProfileRequest(
         profileFor: _getIntValue('profileFor', 1),
         isActive: true,
@@ -505,12 +500,10 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
         profileEducations: _createProfileEducations(),
       );
 
-      final response = await memberProvider.createProfile(profileRequest);
-
+      final response = await memberProvider.createMemberProfile(profileRequest);
 
       if (!mounted) return;
 
-      // Hide loading dialog
       DialogUtils.hideLoadingDialog(context);
 
       if (response.isError) {
@@ -538,10 +531,8 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
         );
       }
     } catch (e) {
-
       if (!mounted) return;
 
-      // Hide loading dialog
       DialogUtils.hideLoadingDialog(context);
 
       DialogUtils.showErrorDialog(
@@ -558,7 +549,6 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
     }
   }
 
-  // Helper methods for ProfileRequest creation
   int _getIntValue(String key, [int? defaultValue]) {
     final value = _formData[key];
     if (value == null) return defaultValue ?? 1;
@@ -637,101 +627,5 @@ class _MemberRegistrationScreenState extends State<MemberRegistrationScreen> {
         educationQualificationId: _formData['education']?.toString() ?? '1',
       ),
     ];
-  }
-
-  // Map form data to match API structure (legacy method - can be removed)
-  void _mapFormDataToApiStructure(Map<String, dynamic> data) {
-    // Map looking for preferences
-    if (data['preferenceGender'] != null) {
-      data['preferenceGender'] = data['preferenceGender'];
-    }
-    if (data['preferenceAgeMin'] != null) {
-      data['preferenceAgeMin'] = data['preferenceAgeMin'];
-    }
-    if (data['preferenceAgeMax'] != null) {
-      data['preferenceAgeMax'] = data['preferenceAgeMax'];
-    }
-    if (data['preferredCountry'] != null) {
-      data['preferredCountry'] = data['preferredCountry'];
-    }
-
-    // Map basic info
-    if (data['maritalStatus'] != null) {
-      data['maritalStatus'] = data['maritalStatus'];
-    }
-
-    // Map contact info
-    if (data['residencyStatus'] != null) {
-      data['residencyStatus'] = data['residencyStatus'];
-    }
-
-    // Map personal details
-    if (data['diet'] != null) {
-      data['diet'] = data['diet'];
-    }
-    if (data['drinkingHabit'] != null) {
-      data['drinkingHabit'] = data['drinkingHabit'];
-    }
-    if (data['smokingHabit'] != null) {
-      data['smokingHabit'] = data['smokingHabit'];
-    }
-    if (data['complexion'] != null) {
-      data['complexion'] = data['complexion'];
-    }
-
-    // Map family info
-    if (data['siblings'] != null) {
-      data['siblings'] = data['siblings'];
-    }
-
-    // Map religious background
-    if (data['religion'] != null) {
-      data['religion'] = data['religion'];
-    }
-    if (data['community'] != null) {
-      data['community'] = data['community'];
-    }
-    if (data['star'] != null) {
-      data['star'] = data['star'];
-    }
-    if (data['raasi'] != null) {
-      data['raasi'] = data['raasi'];
-    }
-
-    // Map education & career
-    if (data['education'] != null) {
-      data['education'] = data['education'];
-    }
-    if (data['qualification'] != null) {
-      data['qualification'] = data['qualification'];
-    }
-    if (data['institute'] != null) {
-      data['institute'] = data['institute'];
-    }
-    if (data['sector'] != null) {
-      data['sector'] = data['sector'];
-    }
-    if (data['jobType'] != null) {
-      data['jobType'] = data['jobType'];
-    }
-    if (data['jobTitle'] != null) {
-      data['jobTitle'] = data['jobTitle'];
-    }
-    if (data['companyName'] != null) {
-      data['companyName'] = data['companyName'];
-    }
-    if (data['salary'] != null) {
-      data['salary'] = data['salary'];
-    }
-    if (data['currency'] != null) {
-      data['currency'] = data['currency'];
-    }
-
-    // Ensure required fields have proper values
-    data['isVisible'] = true;
-    data['isVisibleCommunity'] = true;
-    data['willingToRelocate'] = data['willingToRelocate'] ?? 1;
-    data['disability'] = data['disability'] ?? '';
-    data['subCommunityId'] = data['subCommunityId'] ?? '';
   }
 }

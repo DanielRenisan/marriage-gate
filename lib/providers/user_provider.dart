@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/models/user.dart';
 import 'package:matrimony_flutter/models/member.dart';
-import 'package:matrimony_flutter/services/auth_service.dart';
 import 'package:matrimony_flutter/services/member_service.dart';
 
 class UserProvider extends ChangeNotifier {
-  final AuthService _authService = AuthService();
   final MemberService _memberService = MemberService();
 
   User? _currentUser;
   User? get currentUser => _currentUser;
 
-  List<UserProfile> _userMemberProfiles = [];
-  List<UserProfile> get userMemberProfiles => _userMemberProfiles;
+  List<MemberProfile> _userMemberProfiles = [];
+  List<MemberProfile> get userMemberProfiles => _userMemberProfiles;
 
-  UserProfile? _selectedMemberProfile;
-  UserProfile? get selectedMemberProfile => _selectedMemberProfile;
+  MemberProfile? _selectedMemberProfile;
+  MemberProfile? get selectedMemberProfile => _selectedMemberProfile;
 
   final bool _isLoadingUser = false;
   bool get isLoadingUser => _isLoadingUser;
@@ -24,7 +22,7 @@ class UserProvider extends ChangeNotifier {
   bool get isLoadingMemberProfiles => _isLoadingMemberProfiles;
 
   bool get hasMemberProfiles => _userMemberProfiles.isNotEmpty;
-
+//
   void setCurrentUser(User user) {
     _currentUser = user;
     notifyListeners();
@@ -35,7 +33,7 @@ class UserProvider extends ChangeNotifier {
       _isLoadingMemberProfiles = true;
       notifyListeners();
 
-      _userMemberProfiles = await _memberService.getUserProfiles();
+      _userMemberProfiles = await _memberService.getMemberProfiles();
 
       _isLoadingMemberProfiles = false;
       notifyListeners();
@@ -46,12 +44,12 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  void setSelectedMemberProfile(UserProfile profile) {
+  void setSelectedMemberProfile(MemberProfile profile) {
     _selectedMemberProfile = profile;
     notifyListeners();
   }
 
-  UserProfile? getMemberProfileById(String id) {
+  MemberProfile? getMemberProfileById(String id) {
     try {
       return _userMemberProfiles.firstWhere((profile) => profile.id == id);
     } catch (e) {
@@ -59,12 +57,12 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  void addMemberProfile(UserProfile profile) {
+  void addMemberProfile(MemberProfile profile) {
     _userMemberProfiles.add(profile);
     notifyListeners();
   }
 
-  void updateMemberProfile(UserProfile updatedProfile) {
+  void updateMemberProfile(MemberProfile updatedProfile) {
     final index = _userMemberProfiles.indexWhere((p) => p.id == updatedProfile.id);
     if (index != -1) {
       _userMemberProfiles[index] = updatedProfile;
@@ -83,6 +81,4 @@ class UserProvider extends ChangeNotifier {
     _selectedMemberProfile = null;
     notifyListeners();
   }
-
-  // bool get canAccessMemberFeatures => _currentUser != null && _currentUser!. == 'Member';
 }
