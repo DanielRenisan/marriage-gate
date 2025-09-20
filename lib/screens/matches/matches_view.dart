@@ -279,7 +279,7 @@ class _MatchesViewState extends State<MatchesView> {
                   child: Stack(
                     children: [
                       // Profile Image with error handling
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         height: double.infinity,
                         child: Image.network(

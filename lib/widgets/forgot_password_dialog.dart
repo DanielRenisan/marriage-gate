@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:matrimony_flutter/providers/auth_provider.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/widgets/custom_text_field.dart';
 import 'package:matrimony_flutter/widgets/custom_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,7 +20,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   ResetPasswordStep _currentStep = ResetPasswordStep.enterEmail;
   String _otpCode = '';
   bool _isPasswordVisible = false;
@@ -387,10 +387,10 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     try {
       final result = await authProvider.forgotPassword(true, _emailController.text);
-      
+
       if (result['success'] == true && mounted) {
         setState(() {
           _currentStep = ResetPasswordStep.verification;
@@ -414,10 +414,10 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
     if (_otpCode.length != 4) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     try {
       final result = await authProvider.verifyOtp(_otpCode);
-      
+
       if (result['success'] == true && mounted) {
         setState(() {
           _currentStep = ResetPasswordStep.resetPassword;
@@ -446,7 +446,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
     }
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     try {
       final result = await authProvider.resetPassword(
         _passwordController.text,

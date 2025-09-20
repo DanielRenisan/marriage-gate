@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/models/education_qualification.dart';
 import 'package:matrimony_flutter/models/job_type.dart';
 import 'package:matrimony_flutter/models/religion.dart';
 import 'package:matrimony_flutter/models/member.dart' as member_models;
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 
 import '../models/community.dart';
 

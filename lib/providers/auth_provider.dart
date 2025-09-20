@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/services/social_auth_service.dart';
 import 'package:matrimony_flutter/services/profile_check_service.dart';
 import 'package:matrimony_flutter/services/member_service.dart';
 import 'package:matrimony_flutter/models/user.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 
 import '../models/member.dart';
 

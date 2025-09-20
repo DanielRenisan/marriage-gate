@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/widgets/custom_text_field.dart';
 import 'package:matrimony_flutter/widgets/custom_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
@@ -282,7 +282,7 @@ class _BasicInfoFormState extends State<BasicInfoForm> {
           children: [
             Expanded(
               child: RadioListTile<int>(
-                title: Text('Male'),
+                title: const Text('Male'),
                 value: 1,
                 groupValue: _selectedGender,
                 onChanged: (value) {
@@ -297,7 +297,7 @@ class _BasicInfoFormState extends State<BasicInfoForm> {
             ),
             Expanded(
               child: RadioListTile<int>(
-                title: Text('Female'),
+                title: const Text('Female'),
                 value: 2,
                 groupValue: _selectedGender,
                 onChanged: (value) {
@@ -362,7 +362,7 @@ class _BasicInfoFormState extends State<BasicInfoForm> {
             value: _heightController.text.isNotEmpty ? int.tryParse(_heightController.text) : null,
             isExpanded: true,
             underline: const SizedBox(),
-            hint: Text('170 cm (default)'),
+            hint: const Text('170 cm (default)'),
             items: heightOptions.map((option) {
               return DropdownMenuItem<int>(
                 value: option['id'] as int,

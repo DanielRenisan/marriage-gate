@@ -5,7 +5,7 @@ import 'package:matrimony_flutter/providers/member_provider.dart';
 import 'package:matrimony_flutter/models/member.dart';
 import 'package:matrimony_flutter/screens/member-registration/member_registration_screen.dart';
 import 'package:matrimony_flutter/screens/main/main_screen.dart';
-import 'package:matrimony_flutter/utils/dialog_utils.dart';
+import 'package:matrimony_flutter/utils/popup_utils.dart';
 
 class ProfileSelectionScreen extends StatefulWidget {
   const ProfileSelectionScreen({super.key});

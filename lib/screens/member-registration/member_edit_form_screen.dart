@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:matrimony_flutter/providers/member_provider.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 
-import 'package:matrimony_flutter/utils/dialog_utils.dart';
+import 'package:matrimony_flutter/utils/popup_utils.dart';
 import 'package:matrimony_flutter/widgets/custom_button.dart';
 import 'package:matrimony_flutter/screens/member-registration/member-form/member_form_screen.dart';
 
@@ -40,7 +40,7 @@ class _MemberEditFormScreenState extends State<MemberEditFormScreen> {
       final memberProvider = Provider.of<MemberProvider>(context, listen: false);
       await memberProvider.loadCurrentUserProfile(widget.memberId);
       final profile = memberProvider.currentUserProfile;
-      
+
       if (mounted && profile != null) {
         setState(() {
           _existingProfile = profile.toJson();
@@ -234,7 +234,7 @@ class _MemberEditFormScreenState extends State<MemberEditFormScreen> {
 
   bool _validateCurrentStep() {
     final currentStepEnum = RegistrationConstants.registrationSteps[_currentStep];
-    
+
     switch (currentStepEnum) {
       case RegistrationStep.lookingFor:
         return _validateLookingForStep();
@@ -369,17 +369,17 @@ class _MemberEditFormScreenState extends State<MemberEditFormScreen> {
       DialogUtils.showLoadingDialog(context, message: 'Saving your profile...');
 
       final memberProvider = Provider.of<MemberProvider>(context, listen: false);
-      
+
       // Prepare the complete profile data
       final profileData = Map<String, dynamic>.from(_formData);
-      
+
       // Add any additional required fields
       profileData['updatedAt'] = DateTime.now().toIso8601String();
 
       await memberProvider.updateProfile(widget.memberId, profileData);
-      
+
       DialogUtils.hideLoadingDialog(context);
-      
+
       if (mounted) {
         DialogUtils.showSuccessDialog(
           context,
@@ -392,7 +392,7 @@ class _MemberEditFormScreenState extends State<MemberEditFormScreen> {
       }
     } catch (e) {
       DialogUtils.hideLoadingDialog(context);
-      
+
       if (mounted) {
         DialogUtils.showErrorDialog(
           context,

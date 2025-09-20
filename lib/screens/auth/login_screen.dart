@@ -10,7 +10,7 @@ import 'package:matrimony_flutter/widgets/otp_verification_widget.dart';
 import 'package:matrimony_flutter/widgets/social_login_buttons.dart';
 import 'package:matrimony_flutter/widgets/phone_number_input.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 
 enum ForgotPasswordStep { enterEmail, verification, resetPassword }
 

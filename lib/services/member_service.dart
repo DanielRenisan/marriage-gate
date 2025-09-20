@@ -6,7 +6,7 @@ import 'package:matrimony_flutter/models/profile_response.dart';
 import 'package:matrimony_flutter/models/profile_request.dart';
 import 'package:matrimony_flutter/models/matching_profile_response.dart';
 import 'package:matrimony_flutter/models/notification_item.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/services/auth_service.dart';
 
 import '../models/matching_profiles_request.dart';

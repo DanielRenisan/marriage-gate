@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/screens/matches/matches_view.dart';
 import 'package:matrimony_flutter/screens/chat/chat_view.dart';
 import 'package:matrimony_flutter/screens/notifications/notifications_screen.dart';
-import 'package:matrimony_flutter/widgets/profile_drawer.dart';
+import 'package:matrimony_flutter/screens/profile/profile_drawer_view.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

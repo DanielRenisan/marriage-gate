@@ -141,7 +141,6 @@ class _GooglePlacesAutocompleteState extends State<GooglePlacesAutocomplete> {
         } else {
         }
       }
-    } catch (e) {
     } finally {
       setState(() {
         _isLoading = false;

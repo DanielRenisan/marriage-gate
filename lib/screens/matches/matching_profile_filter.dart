@@ -17,10 +17,10 @@ class MatchingProfileFilter extends StatefulWidget {
   final ScrollController scrollController;
 
   const MatchingProfileFilter({
-    Key? key,
+    super.key,
     required this.initial,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   State<MatchingProfileFilter> createState() => _MatchingProfileFilterState();
@@ -475,11 +475,11 @@ class _MatchingProfileFilterState extends State<MatchingProfileFilter> {
               SizedBox(width: 8.w),
               ElevatedButton(
                 onPressed: _apply,
-                child: const Text('Apply'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
                 ),
+                child: const Text('Apply'),
               ),
             ],
           ),

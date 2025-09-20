@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:matrimony_flutter/viewmodels/profile_view_model.dart';
-import 'package:matrimony_flutter/utils/dialog_utils.dart';
+import 'package:matrimony_flutter/utils/popup_utils.dart';
 import 'package:matrimony_flutter/models/member.dart';
 
 class ProfileView extends StatefulWidget {

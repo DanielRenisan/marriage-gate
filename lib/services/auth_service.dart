@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:matrimony_flutter/models/token_result.dart';
 import 'package:matrimony_flutter/models/api_response.dart';
 import 'package:matrimony_flutter/models/user.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {

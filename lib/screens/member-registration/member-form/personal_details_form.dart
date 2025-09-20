@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/widgets/custom_text_field.dart';
 import 'package:matrimony_flutter/widgets/custom_dropdown.dart';
 
@@ -305,7 +305,7 @@ class _PersonalDetailsFormState extends State<PersonalDetailsForm> {
           children: [
             Expanded(
               child: RadioListTile<int>(
-                title: Text('Yes'),
+                title: const Text('Yes'),
                 value: 1,
                 groupValue: _willingToRelocate,
                 onChanged: (value) {
@@ -320,7 +320,7 @@ class _PersonalDetailsFormState extends State<PersonalDetailsForm> {
             ),
             Expanded(
               child: RadioListTile<int>(
-                title: Text('No'),
+                title: const Text('No'),
                 value: 2,
                 groupValue: _willingToRelocate,
                 onChanged: (value) {
@@ -335,7 +335,7 @@ class _PersonalDetailsFormState extends State<PersonalDetailsForm> {
             ),
             Expanded(
               child: RadioListTile<int>(
-                title: Text('Maybe'),
+                title: const Text('Maybe'),
                 value: 3,
                 groupValue: _willingToRelocate,
                 onChanged: (value) {
@@ -410,7 +410,7 @@ class _PersonalDetailsFormState extends State<PersonalDetailsForm> {
             value: null, // No default selection
             isExpanded: true,
             underline: const SizedBox(),
-            hint: Text('Select a language to add'),
+            hint: const Text('Select a language to add'),
             items: RegistrationConstants.commonLanguages
                 .map((language) {
                   // Filter out already selected languages

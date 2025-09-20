@@ -9,7 +9,6 @@ import 'package:matrimony_flutter/providers/data_provider.dart';
 import 'package:matrimony_flutter/viewmodels/profile_view_model.dart';
 import 'package:matrimony_flutter/viewmodels/matches_view_model.dart';
 import 'package:matrimony_flutter/viewmodels/chat_view_model.dart';
-import 'package:matrimony_flutter/screens/home/home_screen.dart';
 import 'package:matrimony_flutter/screens/profile/profile_view.dart';
 import 'package:matrimony_flutter/screens/chat/chat_view.dart';
 import 'package:matrimony_flutter/screens/member-registration/member_registration_screen.dart';
@@ -77,7 +76,6 @@ class MyApp extends StatelessWidget {
               '/login': (context) => const LoginScreen(),
               '/profile-selection': (context) => const ProfileSelectionScreen(),
               '/member-registration': (context) => const MemberRegistrationScreen(),
-              '/home': (context) => const HomeScreen(),
               '/main': (context) => const MainScreen(),
               '/profile': (context) => const ProfileView(),
               '/chat': (context) => const ChatView(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/screens/member-registration/member-form/looking_for_form.dart';
 import 'package:matrimony_flutter/screens/member-registration/member-form/basic_info_form.dart';
 import 'package:matrimony_flutter/screens/member-registration/member-form/contact_info_form.dart';
@@ -31,7 +31,7 @@ class MemberFormScreen extends StatelessWidget {
 
   Widget _buildCurrentStepForm() {
     final currentStepEnum = RegistrationConstants.registrationSteps[currentStep];
-    
+
     switch (currentStepEnum) {
       case RegistrationStep.lookingFor:
         return LookingForForm(

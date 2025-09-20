@@ -114,14 +114,14 @@ class ProfileDrawer extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                   padding: EdgeInsets.all(2.r),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
                   child: Container(
                     width: 12.r,
                     height: 12.r,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
                     ),

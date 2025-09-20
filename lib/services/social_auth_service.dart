@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/models/api_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SocialAuthService {

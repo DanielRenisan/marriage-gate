@@ -379,7 +379,7 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
             CustomDropdown(
               label: 'Residency Status *',
               value: _selectedResidencyStatus,
-              options: [
+              options: const [
                 {'id': 'citizen', 'name': 'Citizen'},
                 {'id': 'permanent_resident', 'name': 'Permanent Resident'},
                 {'id': 'temporary_resident', 'name': 'Temporary Resident'},

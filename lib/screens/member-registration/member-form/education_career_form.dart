@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/widgets/custom_text_field.dart';
 import 'package:matrimony_flutter/widgets/custom_dropdown.dart';
 import 'package:matrimony_flutter/providers/data_provider.dart';
@@ -135,7 +135,7 @@ class _EducationCareerFormState extends State<EducationCareerForm> {
             if (dataProvider.isLoadingEducation)
               Container(
                 padding: EdgeInsets.all(16.w),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                   ),
@@ -205,7 +205,7 @@ class _EducationCareerFormState extends State<EducationCareerForm> {
             if (dataProvider.isLoadingJobTypes)
               Container(
                 padding: EdgeInsets.all(16.w),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                   ),
@@ -336,7 +336,7 @@ class _EducationCareerFormState extends State<EducationCareerForm> {
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: Text('Monthly'),
+                    title: const Text('Monthly'),
                     value: false,
                     groupValue: _isYearly,
                     onChanged: (value) {
@@ -351,7 +351,7 @@ class _EducationCareerFormState extends State<EducationCareerForm> {
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: Text('Yearly'),
+                    title: const Text('Yearly'),
                     value: true,
                     groupValue: _isYearly,
                     onChanged: (value) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:matrimony_flutter/utils/constants.dart';
+import 'package:matrimony_flutter/utils/enum.dart';
 import 'package:matrimony_flutter/widgets/custom_text_field.dart';
 import 'package:matrimony_flutter/widgets/custom_dropdown.dart';
 import 'package:matrimony_flutter/widgets/google_places_autocomplete.dart';
