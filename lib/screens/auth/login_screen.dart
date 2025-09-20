@@ -256,37 +256,37 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
 
-          if (_emailController.text.isNotEmpty)
-            Container(
-              margin: EdgeInsets.only(top: 8.h),
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: _loginType == LoginType.email ? Colors.blue[50] : Colors.green[50],
-                borderRadius: BorderRadius.circular(6.r),
-                border: Border.all(
-                  color: _loginType == LoginType.email ? Colors.blue[200]! : Colors.green[200]!,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    _loginType == LoginType.email ? Icons.email : Icons.phone,
-                    size: 16.sp,
-                    color: _loginType == LoginType.email ? Colors.blue[600] : Colors.green[600],
-                  ),
-                  SizedBox(width: 6.w),
-                  Text(
-                    _loginType == LoginType.email ? 'Email detected' : 'Phone number detected',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: _loginType == LoginType.email ? Colors.blue[700] : Colors.green[700],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          // if (_emailController.text.isNotEmpty)
+          //   Container(
+          //     margin: EdgeInsets.only(top: 8.h),
+          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+          //     decoration: BoxDecoration(
+          //       color: _loginType == LoginType.email ? Colors.blue[50] : Colors.green[50],
+          //       borderRadius: BorderRadius.circular(6.r),
+          //       border: Border.all(
+          //         color: _loginType == LoginType.email ? Colors.blue[200]! : Colors.green[200]!,
+          //       ),
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Icon(
+          //           _loginType == LoginType.email ? Icons.email : Icons.phone,
+          //           size: 16.sp,
+          //           color: _loginType == LoginType.email ? Colors.blue[600] : Colors.green[600],
+          //         ),
+          //         SizedBox(width: 6.w),
+          //         Text(
+          //           _loginType == LoginType.email ? 'Email detected' : 'Phone number detected',
+          //           style: TextStyle(
+          //             fontSize: 12.sp,
+          //             color: _loginType == LoginType.email ? Colors.blue[700] : Colors.green[700],
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
 
           SizedBox(height: 16.h),
 

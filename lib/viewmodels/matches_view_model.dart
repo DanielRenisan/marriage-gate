@@ -3,6 +3,7 @@ import 'package:matrimony_flutter/providers/member_provider.dart';
 import 'package:matrimony_flutter/viewmodels/base_view_model.dart';
 
 import '../models/matching_profile_response.dart';
+import '../models/matching_profiles_request.dart';
 
 class MatchesViewModel extends BaseViewModel {
   final MemberProvider _memberProvider;
@@ -11,6 +12,7 @@ class MatchesViewModel extends BaseViewModel {
   List<MatchingProfile> _filteredProfiles = [];
   String _searchTerm = '';
   final bool _isSearching = false;
+  MatchingProfilesRequest? _activeFilters;
 
   MatchesViewModel(this._memberProvider);
 
@@ -19,10 +21,11 @@ class MatchesViewModel extends BaseViewModel {
   String get searchTerm => _searchTerm;
   bool get isSearching => _isSearching;
   bool get hasProfiles => _filteredProfiles.isNotEmpty;
+  MatchingProfilesRequest? get activeFilters => _activeFilters;
 
   Future<void> loadMatchingProfiles() async {
     await handleAsyncOperation(() async {
-      await _memberProvider.loadMatchingProfiles(null, _memberProvider.currentUserProfile?.id ?? '', 1, 20);
+      await _memberProvider.loadMatchingProfiles(_activeFilters, _memberProvider.currentUserProfile?.id ?? '', 1, 20);
       _matchingProfiles = _memberProvider.matchingProfiles;
       _filteredProfiles = _matchingProfiles;
     });
@@ -47,6 +50,18 @@ class MatchesViewModel extends BaseViewModel {
       }).toList();
     }
     notifyListeners();
+  }
+
+  // Apply new filters and reload from API
+  Future<void> applyFilters(MatchingProfilesRequest filters) async {
+    _activeFilters = filters;
+    await loadMatchingProfiles();
+  }
+
+  // Clear filters back to defaults and reload
+  Future<void> clearFilters() async {
+    _activeFilters = null;
+    await loadMatchingProfiles();
   }
 
   String calculateAge(String? dateOfBirth) {

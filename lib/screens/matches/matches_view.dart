@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:matrimony_flutter/viewmodels/matches_view_model.dart';
-import 'package:matrimony_flutter/models/member.dart';
-
 import '../../models/matching_profile_response.dart';
+import '../../models/matching_profiles_request.dart';
+import 'matching_profile_filter.dart';
 
 class MatchesView extends StatefulWidget {
   const MatchesView({super.key});
@@ -31,15 +31,10 @@ class _MatchesViewState extends State<MatchesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Matches'),
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () => _showSearchDialog(context),
-          ),
-        ],
       ),
       body: Consumer<MatchesViewModel>(
         builder: (context, viewModel, child) {
@@ -47,50 +42,208 @@ class _MatchesViewState extends State<MatchesView> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Error: ${viewModel.errorMessage}',
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                  ElevatedButton(
-                    onPressed: _loadMatches,
-                    child: const Text('Retry'),
-                  ),
-                ],
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: TextField(
+                          onChanged: (value) => viewModel.setSearchTerm(value),
+                          decoration: InputDecoration(
+                            hintText: 'Search by name, city, or occupation...',
+                            prefixIcon: const Icon(Icons.search),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Container(
+                      height: 40.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.filter_list, color: Colors.white),
+                        onPressed: _openFilter,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          }
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    if (viewModel.hasError) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Error: ${viewModel.errorMessage}',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                            ElevatedButton(
+                              onPressed: _loadMatches,
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
 
-          if (!viewModel.hasProfiles) {
-            return const Center(
-              child: Text('No matches found'),
-            );
-          }
+                    if (!viewModel.hasProfiles) {
+                      return const Center(
+                        child: Text('No matches found'),
+                      );
+                    }
 
-          return RefreshIndicator(
-            onRefresh: _loadMatches,
-            child: GridView.builder(
-              padding: EdgeInsets.all(16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-                childAspectRatio: 0.75,
+                    return RefreshIndicator(
+                      onRefresh: _loadMatches,
+                      child: GridView.builder(
+                        padding: EdgeInsets.all(16.w),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12.w,
+                          mainAxisSpacing: 12.h,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemCount: viewModel.filteredProfiles.length,
+                        itemBuilder: (context, index) {
+                          final profile = viewModel.filteredProfiles[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: InkWell(
+                              onTap: () => viewModel.showProfileDetails(context, profile),
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(12.r),
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(12.r),
+                                        ),
+                                        child: Image.network(
+                                          profile.profileImage ?? 'https://via.placeholder.com/150',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.w),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            '${profile.firstName} ${profile.lastName}',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            '${viewModel.calculateAge(profile.dateOfBirth)} yrs',
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                          Text(
+                                            profile.livingAddresses.city,
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.grey[600],
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
-              itemCount: viewModel.filteredProfiles.length,
-              itemBuilder: (context, index) {
-                final profile = viewModel.filteredProfiles[index];
-                return _buildMatchCard(profile, viewModel);
-              },
-            ),
+            ],
           );
         },
       ),
     );
+  }
+
+  Future<void> _openFilter() async {
+    final current = _viewModel.activeFilters ?? MatchingProfilesRequest.defaultRequest();
+
+    final result = await showModalBottomSheet<MatchingProfilesRequest>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      builder: (ctx) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.95,
+          minChildSize: 0.6,
+          maxChildSize: 0.95,
+          builder: (context, controller) {
+            return MatchingProfileFilter(
+              initial: current,
+              scrollController: controller,
+            );
+          },
+        );
+      },
+    );
+
+    if (!mounted) return;
+
+    if (result != null) {
+      await _viewModel.applyFilters(result);
+    }
   }
 
   Widget _buildMatchCard(MatchingProfile profile, MatchesViewModel viewModel) {
@@ -257,7 +410,7 @@ class _MatchesViewState extends State<MatchesView> {
                     ),
                     // Religion
                     Text(
-                      profile.religion ?? 'Religion N/A',
+                      profile.religion,
                       style: TextStyle(
                         fontSize: 9.sp,
                         color: Colors.grey[600],
@@ -275,34 +428,5 @@ class _MatchesViewState extends State<MatchesView> {
     );
   }
 
-  void _showSearchDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Search Matches'),
-        content: TextField(
-          decoration: const InputDecoration(
-            hintText: 'Search by name, city, or occupation...',
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (value) {
-            context.read<MatchesViewModel>().setSearchTerm(value);
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<MatchesViewModel>().setSearchTerm('');
-            },
-            child: const Text('Clear'),
-          ),
-        ],
-      ),
-    );
-  }
+  // Removed _showSearchDialog as it's no longer needed with the new search bar
 }
